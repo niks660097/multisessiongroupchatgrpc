@@ -43,7 +43,7 @@ enum UserRequestType {
 message UserRequest{
     UserRequestType type=1;
     string username=2;
-    repeated string user_ids=3;
+    repeated string session_usernames=3;
 }
 
 message UserReqResponse{
