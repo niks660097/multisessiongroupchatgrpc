@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package protos;
+
+service MultiSessionChatServer{
+    rpc requestServer(UserRequest) returns (UserReqResponse){};
+
+    rpc senderStream(stream UserMessage) returns (stream RecvOk){};
+
+    rpc recvrStream(stream RecvOk) returns (stream UserMessage){};
+
+}
+
+message UserMessage{
+    string user_secret=1;
+    string username=2;
+    Message message=3;
+    string message_id=4;
+    string session_secret=5;
+}
+
+message RecvOk{
+    enum RecvType {
+        SERVER_RECEIVED=0;
+        USER_RECEIVED=1;
+    }
+    RecvType recv_type=1;
+    string message_id=2;
+    string recv_username=3;
+}
+
+message Message{
+    string message=1;
+}
+
+enum UserRequestType {
+    REGISTER_USER=0;
+    START_SESSION=1;
+    LIST_ALL_USERS=3;
+    LIST_CONNECTED_USERS=4;
+}
+
+message UserRequest{
+    UserRequestType type=1;
+    string username=2;
+    repeated string user_ids=3;
+}
+
+message UserReqResponse{
+    string response=1;
+    bool status =2;
+}
